@@ -1,6 +1,6 @@
 import { formatCents } from "@/lib/money";
 import type { SharedDocument } from "@/lib/types";
-import { PrintButton } from "./PrintButton";
+import { DocumentActions } from "./DocumentActions";
 
 const DOCUMENT_KIND_LABEL: Record<SharedDocument["documentKind"], string> = {
   receipt: "Receipt",
@@ -24,7 +24,7 @@ function formatStatus(status: string): string {
   return status.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-export function DocumentView({ doc }: { doc: SharedDocument }) {
+export function DocumentView({ doc, token }: { doc: SharedDocument; token: string }) {
   const money = (cents: number | null) => (cents === null ? "-" : formatCents(cents, doc.currency));
   const status = doc.paymentStatus ?? doc.quotationStatus;
   const statusTone = status ? (STATUS_TONE[status] ?? "border-navy/30 text-navy/50") : null;
@@ -148,9 +148,7 @@ export function DocumentView({ doc }: { doc: SharedDocument }) {
         <p className="text-center text-xs text-navy/50">{doc.receiptFooter ?? "Thank you for your business!"}</p>
       </div>
 
-      <div className="mt-4">
-        <PrintButton />
-      </div>
+      <DocumentActions token={token} />
     </div>
   );
 }
