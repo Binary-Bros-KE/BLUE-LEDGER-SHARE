@@ -55,23 +55,33 @@ export function StatementView({ doc, token }: { doc: SharedStatement; token: str
         </div>
 
         <div className="my-3 border-t border-dashed border-navy/20" />
-        <div className="space-y-2">
+        <div className="space-y-3">
           {doc.invoices.length === 0 ? (
             <p className="text-center text-xs text-navy/50">No outstanding invoices</p>
           ) : (
-            doc.invoices.map((invoice) => (
-              <div key={invoice.id} className="flex items-start justify-between gap-2">
-                <div className="min-w-0">
-                  <p className="truncate font-bold">{invoice.invoiceNumber ?? "-"}</p>
-                  <p className="text-xs text-navy/50">
-                    Due {invoice.dueDate ? new Date(invoice.dueDate).toLocaleDateString() : "-"}
-                    {" · "}
-                    <span className={`rounded-full border border-dashed px-1.5 py-0.5 text-[10px] font-extrabold tracking-wide uppercase ${STATUS_TONE[invoice.paymentStatus] ?? "border-navy/30 text-navy/50"}`}>
-                      {formatStatus(invoice.paymentStatus)}
-                    </span>
-                  </p>
+            doc.invoices.map((invoice, index) => (
+              <div key={invoice.id} className={index < doc.invoices.length - 1 ? "border-b border-dashed border-navy/10 pb-3" : ""}>
+                <div className="flex items-start justify-between gap-2">
+                  <p className="font-bold">{invoice.invoiceNumber ?? "-"}</p>
+                  <span className={`rounded-full border border-dashed px-1.5 py-0.5 text-[10px] font-extrabold tracking-wide uppercase ${STATUS_TONE[invoice.paymentStatus] ?? "border-navy/30 text-navy/50"}`}>
+                    {formatStatus(invoice.paymentStatus)}
+                  </span>
                 </div>
-                <p className="flex-none font-bold">{money(invoice.balanceDueCents)}</p>
+                <p className="text-xs text-navy/50">Due {invoice.dueDate ? new Date(invoice.dueDate).toLocaleDateString() : "-"}</p>
+                <div className="mt-1.5 space-y-0.5 text-xs">
+                  <div className="flex justify-between text-navy/70">
+                    <span>Invoice Value</span>
+                    <span>{money(invoice.grandTotalCents)}</span>
+                  </div>
+                  <div className="flex justify-between text-navy/70">
+                    <span>Paid</span>
+                    <span>{money(invoice.amountPaidCents)}</span>
+                  </div>
+                  <div className="flex justify-between font-bold text-navy">
+                    <span>Balance</span>
+                    <span>{money(invoice.balanceDueCents)}</span>
+                  </div>
+                </div>
               </div>
             ))
           )}
