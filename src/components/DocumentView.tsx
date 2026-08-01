@@ -1,3 +1,4 @@
+import { formatDocumentDate, formatDocumentDateTime } from "@/lib/date";
 import { formatCents } from "@/lib/money";
 import type { SharedDocument } from "@/lib/types";
 import { DocumentActions } from "./DocumentActions";
@@ -51,7 +52,7 @@ export function DocumentView({ doc, token }: { doc: SharedDocument; token: strin
         <p className="text-xs leading-relaxed text-navy/70">
           {DOCUMENT_KIND_LABEL[doc.documentKind]}: {doc.documentNumber ?? "-"}
           <br />
-          Date: {new Date(doc.dateLabel).toLocaleString()}
+          Date: {formatDocumentDateTime(doc.dateLabel)}
           <br />
           Served by: {doc.employeeName} · Branch: {doc.branchName}
           {doc.customerName && (
@@ -63,13 +64,13 @@ export function DocumentView({ doc, token }: { doc: SharedDocument; token: strin
           {doc.dueDate && (
             <>
               <br />
-              Due: {new Date(doc.dueDate).toLocaleDateString()}
+              Due: {formatDocumentDate(doc.dueDate)}
             </>
           )}
           {doc.validUntil && (
             <>
               <br />
-              Valid until: {new Date(doc.validUntil).toLocaleDateString()}
+              Valid until: {formatDocumentDate(doc.validUntil)}
             </>
           )}
         </p>
