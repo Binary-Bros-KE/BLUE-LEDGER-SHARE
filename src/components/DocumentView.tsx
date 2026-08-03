@@ -1,5 +1,6 @@
 import { formatDocumentDate, formatDocumentDateTime } from "@/lib/date";
 import { formatCents } from "@/lib/money";
+import { taxBreakdownLabel } from "@/lib/tax";
 import type { SharedDocument } from "@/lib/types";
 import { DocumentActions } from "./DocumentActions";
 
@@ -102,10 +103,6 @@ export function DocumentView({ doc, token }: { doc: SharedDocument; token: strin
               <span>-{money(doc.discountAmountCents)}</span>
             </div>
           )}
-          <div className="flex justify-between">
-            <span>Tax</span>
-            <span>{money(doc.taxAmountCents)}</span>
-          </div>
           <div className="flex justify-between text-base font-extrabold">
             <span>Total</span>
             <span>{money(doc.grandTotalCents)}</span>
@@ -117,6 +114,23 @@ export function DocumentView({ doc, token }: { doc: SharedDocument; token: strin
             </div>
           )}
         </div>
+
+        {doc.taxBreakdown.length > 0 && (
+          <>
+            <div className="my-3 border-t border-dashed border-navy/20" />
+            <p className="mb-1.5 text-[10px] font-extrabold tracking-wide text-navy/50 uppercase">Tax Breakdown</p>
+            <div className="space-y-1 text-xs">
+              {doc.taxBreakdown.map((entry) => (
+                <div key={entry.taxType} className="flex justify-between gap-2">
+                  <span className="font-bold">{taxBreakdownLabel(entry.taxType, doc.vatRatePercent)}</span>
+                  <span className="text-navy/70">
+                    Net {money(entry.netCents)} / Tax {money(entry.taxCents)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
 
         {(doc.paymentMethodName || doc.paymentReference || doc.amountReceivedCents !== null) && (
           <>

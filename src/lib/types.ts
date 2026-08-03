@@ -2,6 +2,15 @@ export type PricedDocumentKind = "receipt" | "invoice" | "quotation";
 
 export type SharedLineItem = { name: string; quantity: number; unitPriceCents: number; lineTotalCents: number };
 
+export type TaxType = "vat" | "exempted" | "zero_rated";
+
+export type TaxBreakdownEntry = {
+  taxType: TaxType;
+  netCents: number;
+  taxCents: number;
+  grossCents: number;
+};
+
 export type SharedDocument = {
   documentKind: PricedDocumentKind;
   businessName: string;
@@ -20,6 +29,8 @@ export type SharedDocument = {
   subtotalCents: number;
   discountAmountCents: number;
   taxAmountCents: number;
+  taxBreakdown: TaxBreakdownEntry[];
+  vatRatePercent: number;
   grandTotalCents: number;
   paymentMethodName: string | null;
   paymentReference: string | null;
