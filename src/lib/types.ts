@@ -11,6 +11,16 @@ export type TaxBreakdownEntry = {
   grossCents: number;
 };
 
+/** Full payment history — only invoices populate this as a table; receipts/quotations leave it
+ * empty and keep using the single-payment fields below (paymentMethodName/amountReceivedCents/etc). */
+export type SharedPayment = {
+  receivedAt: string;
+  paymentMethodName: string;
+  reference: string | null;
+  receivedByName: string;
+  amountCents: number;
+};
+
 export type SharedDocument = {
   documentKind: PricedDocumentKind;
   businessName: string;
@@ -32,6 +42,7 @@ export type SharedDocument = {
   taxBreakdown: TaxBreakdownEntry[];
   vatRatePercent: number;
   grandTotalCents: number;
+  payments: SharedPayment[];
   paymentMethodName: string | null;
   paymentReference: string | null;
   amountReceivedCents: number | null;

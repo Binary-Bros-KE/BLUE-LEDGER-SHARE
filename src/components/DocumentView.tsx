@@ -115,6 +115,27 @@ export function DocumentView({ doc, token }: { doc: SharedDocument; token: strin
           )}
         </div>
 
+        {doc.payments.length > 0 && (
+          <>
+            <div className="my-3 border-t border-dashed border-navy/20" />
+            <p className="mb-1.5 text-[10px] font-extrabold tracking-wide text-navy/50 uppercase">Payments Made</p>
+            <div className="space-y-2 text-xs">
+              {doc.payments.map((payment, index) => (
+                <div key={index} className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="font-bold">{payment.paymentMethodName}</p>
+                    <p className="text-navy/50">
+                      {formatDocumentDate(payment.receivedAt)} · {payment.receivedByName}
+                      {payment.reference && ` · Ref: ${payment.reference}`}
+                    </p>
+                  </div>
+                  <p className="flex-none font-bold">{money(payment.amountCents)}</p>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
         {doc.taxBreakdown.length > 0 && (
           <>
             <div className="my-3 border-t border-dashed border-navy/20" />
