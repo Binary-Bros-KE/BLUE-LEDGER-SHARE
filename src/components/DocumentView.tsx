@@ -136,7 +136,7 @@ export function DocumentView({ doc, token }: { doc: SharedDocument; token: strin
           </>
         )}
 
-        {doc.taxBreakdown.length > 0 && (
+        {doc.includeTaxBreakdown && doc.taxBreakdown.length > 0 && (
           <>
             <div className="my-3 border-t border-dashed border-navy/20" />
             <p className="mb-1.5 text-[10px] font-extrabold tracking-wide text-navy/50 uppercase">Tax Breakdown</p>
