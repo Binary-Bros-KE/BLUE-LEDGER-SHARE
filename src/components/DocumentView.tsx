@@ -103,6 +103,12 @@ export function DocumentView({ doc, token }: { doc: SharedDocument; token: strin
               <span>-{money(doc.discountAmountCents)}</span>
             </div>
           )}
+          {doc.includeTaxBreakdown && doc.addedTaxCents > 0 && (
+            <div className="flex justify-between">
+              <span>Total Tax</span>
+              <span>{money(doc.addedTaxCents)}</span>
+            </div>
+          )}
           <div className="flex justify-between text-base font-extrabold">
             <span>Total</span>
             <span>{money(doc.grandTotalCents)}</span>
