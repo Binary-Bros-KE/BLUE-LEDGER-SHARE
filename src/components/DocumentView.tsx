@@ -148,8 +148,8 @@ export function DocumentView({ doc, token }: { doc: SharedDocument; token: strin
             <p className="mb-1.5 text-[10px] font-extrabold tracking-wide text-navy/50 uppercase">Tax Breakdown</p>
             <div className="space-y-1 text-xs">
               {doc.taxBreakdown.map((entry) => (
-                <div key={entry.taxType} className="flex justify-between gap-2">
-                  <span className="font-bold">{taxBreakdownLabel(entry.taxType, doc.vatRatePercent)}</span>
+                <div key={`${entry.taxType}:${entry.pricingMode ?? ""}`} className="flex justify-between gap-2">
+                  <span className="font-bold">{taxBreakdownLabel(entry.taxType, doc.vatRatePercent, entry.pricingMode)}</span>
                   <span className="text-navy/70">
                     Net {money(entry.netCents)} / Tax {money(entry.taxCents)}
                   </span>
