@@ -55,7 +55,8 @@ export function DocumentView({ doc, token }: { doc: SharedDocument; token: strin
           <br />
           Date: {formatDocumentDateTime(doc.dateLabel)}
           <br />
-          Served by: {doc.employeeName} · Branch: {doc.branchName}
+          Served by: {doc.employeeName}
+          {doc.branchName && <> · Branch: {doc.branchName}</>}
           {doc.customerName && (
             <>
               <br />
