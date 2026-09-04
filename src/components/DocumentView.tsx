@@ -1,4 +1,5 @@
 import { formatDocumentDate, formatDocumentDateTime } from "@/lib/date";
+import { groupItemsBySections } from "@/lib/document-sections";
 import { formatCents } from "@/lib/money";
 import { taxBreakdownLabel } from "@/lib/tax";
 import type { SharedDocument } from "@/lib/types";
@@ -82,9 +83,35 @@ export function DocumentView({ doc, token }: { doc: SharedDocument; token: strin
         </p>
 
         <div className="my-3 border-t border-dashed border-navy/20" />
-        <div className="space-y-2">
-          {[...doc.items, ...doc.extraLines].map((item, index) => (
-            <div key={index} className="flex items-start justify-between gap-2">
+        <div className="space-y-3">
+          {groupItemsBySections(doc.items).map((group) => (
+            <div key={group.label ?? "__ungrouped"}>
+              {group.label && (
+                <p className="mb-1.5 text-[10px] font-extrabold tracking-wide text-navy/50 uppercase">{group.label}</p>
+              )}
+              <div className="space-y-2">
+                {group.items.map((item, index) => (
+                  <div key={index} className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="truncate font-bold">{item.name}</p>
+                      <p className="text-xs text-navy/50">
+                        {item.quantity} x {money(item.unitPriceCents)}
+                      </p>
+                    </div>
+                    <p className="flex-none font-bold">{money(item.lineTotalCents)}</p>
+                  </div>
+                ))}
+              </div>
+              {group.label && (
+                <div className="mt-1 flex justify-between text-xs font-extrabold">
+                  <span>{group.label} Subtotal</span>
+                  <span>{money(group.subtotalCents)}</span>
+                </div>
+              )}
+            </div>
+          ))}
+          {doc.extraLines.map((item, index) => (
+            <div key={`extra-${index}`} className="flex items-start justify-between gap-2">
               <div className="min-w-0">
                 <p className="truncate font-bold">{item.name}</p>
                 <p className="text-xs text-navy/50">
@@ -190,6 +217,22 @@ export function DocumentView({ doc, token }: { doc: SharedDocument; token: strin
             </p>
           </>
         )}
+
+        {doc.notes && (
+          <>
+            <div className="my-3 border-t border-dashed border-navy/20" />
+            <p className="mb-1 text-[10px] font-extrabold tracking-wide text-navy/50 uppercase">Notes</p>
+            <p className="whitespace-pre-line text-xs">{doc.notes}</p>
+          </>
+        )}
+
+        {doc.notesSections.map((section, index) => (
+          <div key={index}>
+            <div className="my-3 border-t border-dashed border-navy/20" />
+            <p className="mb-1 text-[10px] font-extrabold tracking-wide text-navy/50 uppercase">{section.title}</p>
+            <p className="whitespace-pre-line text-xs">{section.body}</p>
+          </div>
+        ))}
 
         <div className="my-3 border-t border-dashed border-navy/20" />
         <p className="text-center text-xs text-navy/50">{doc.receiptFooter ?? "Thank you for your business!"}</p>

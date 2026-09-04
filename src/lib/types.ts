@@ -6,6 +6,17 @@ export type SharedLineItem = {
   unitPriceCents: number;
   discountAmountCents: number;
   lineTotalCents: number;
+  /** Client request: groups this line under a named section (e.g. "Lighting") on the document —
+   * null for every service-charge/delivery-fee line and for any product line that never opted
+   * into a section. Mirrors SERVER's SharedLineItem["sectionLabel"]. */
+  sectionLabel: string | null;
+};
+
+/** One titled free-text block below an invoice/quotation's items (e.g. "Installation
+ * Instructions") — mirrors SERVER's SharedNotesSection. */
+export type SharedNotesSection = {
+  title: string;
+  body: string;
 };
 
 export type TaxType = "vat" | "exempted" | "zero_rated";
@@ -70,6 +81,14 @@ export type SharedDocument = {
   paymentReference: string | null;
   amountReceivedCents: number | null;
   changeGivenCents: number | null;
+  /** invoiceNotes for a sale, notes for a quotation — same free-text field, different column name
+   * per source table. Was missing from this type entirely (a pre-existing gap — only the PDF
+   * template rendered notes; the on-screen web view never did), closed while adding notesSections
+   * below since a titled notes section needs the plain notes field's own display too. */
+  notes: string | null;
+  /** Client request: any number of additional titled note blocks below notes — see
+   * SharedNotesSection's own doc comment. Defaults to []. */
+  notesSections: SharedNotesSection[];
   dueDate: string | null;
   balanceDueCents: number | null;
   paymentStatus: string | null;
