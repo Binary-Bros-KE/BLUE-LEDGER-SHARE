@@ -1,5 +1,6 @@
 import { AlertTriangle, RefreshCw } from "lucide-react";
 import { getSharedDocument } from "@/lib/api";
+import { CreditNoteView } from "@/components/CreditNoteView";
 import { DeliveryNoteView } from "@/components/DeliveryNoteView";
 import { DocumentView } from "@/components/DocumentView";
 import { PoweredByFooter } from "@/components/PoweredByFooter";
@@ -60,6 +61,8 @@ export default async function SharedDocumentPage({ params }: { params: Promise<{
         <DeliveryNoteView doc={doc} token={token} />
       ) : doc.documentKind === "statement" ? (
         <StatementView doc={doc} token={token} />
+      ) : doc.documentKind === "credit_note" ? (
+        <CreditNoteView doc={doc} token={token} />
       ) : (
         <DocumentView doc={doc} token={token} />
       )}

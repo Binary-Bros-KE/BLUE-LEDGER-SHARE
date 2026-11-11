@@ -152,4 +152,25 @@ export type SharedStatement = {
   totalOutstandingCents: number;
 };
 
-export type SharedResult = SharedDocument | SharedDeliveryNote | SharedStatement;
+/** Mirrors SERVER's SharedCreditNoteResult (share-service.ts). */
+export type SharedCreditNote = {
+  documentKind: "credit_note";
+  businessName: string;
+  physicalAddress: string | null;
+  primaryPhone: string | null;
+  currency: string;
+  creditNoteNumber: string;
+  issuedAt: string;
+  againstKind: "invoice" | "receipt";
+  againstNumber: string | null;
+  customerName: string | null;
+  reason: string;
+  approvedByName: string | null;
+  items: Array<{ name: string; quantity: number; unitPriceCents: number; lineTotalCents: number }>;
+  totalCents: number;
+  balanceReductionCents: number;
+  refundCents: number;
+  invoiceBalanceCents: number | null;
+};
+
+export type SharedResult = SharedDocument | SharedDeliveryNote | SharedStatement | SharedCreditNote;
