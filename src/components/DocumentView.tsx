@@ -145,6 +145,12 @@ export function DocumentView({ doc, token }: { doc: SharedDocument; token: strin
             <span>Total</span>
             <span>{money(doc.grandTotalCents)}</span>
           </div>
+          {doc.creditedCents ? (
+            <div className="flex justify-between">
+              <span>Credit Notes</span>
+              <span>-{money(doc.creditedCents)}</span>
+            </div>
+          ) : null}
           {doc.balanceDueCents !== null && doc.balanceDueCents > 0 && (
             <div className="flex justify-between font-bold text-red">
               <span>Balance Due</span>
