@@ -91,6 +91,8 @@ export type SharedDocument = {
   notesSections: SharedNotesSection[];
   dueDate: string | null;
   balanceDueCents: number | null;
+  /** Approved credit notes on an invoice (absent on documents shared before credit notes). */
+  creditedCents?: number | null;
   paymentStatus: string | null;
   validUntil: string | null;
   quotationStatus: string | null;
